@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Calendar NSS test</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div id ="holder" style="width:960px; margin:10px auto;"></div>
+    <div class="appbar">
+				<ul id="menu" class="appbar-buttons">
+					<ul id="menu" class="appbar-buttons">
+						<li>
+							<a href="#" id= "prev" class="back"><img src="images/1pixel.gif" alt="prev" /></a>
+							<span class="charm-title">Previous</span>
+						</li>
+						<li>
+							<a href="#"  class="clock"><img src="images/1pixel.gif" alt="present" /></a>
+							<span class="charm-title">Events</span>
+						</li>
+						<li>
+							<a href="#" id= "next" class="forward"><img src="images/1pixel.gif" alt="next" /></a>
+							<span class="charm-title">Next</span>
+						</li>
+					</ul>
+				</ul>
+			<a class="etc">&bull;&bull;&bull;</a>
+			<ul class="theme-options clear">
+				
+			</ul>
+			<ul class="base-theme-options clear">
+				
+			</ul>
+			
+	</div>
+    <script src="jquery1.7.1.min.js" type="text/javascript"></script>
+    <script src="metro-js.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+			var reqmon = 0;
+			var reqyear = 0;
+			//Get data from the php script
+			$.get("index.php", function(data){
+			  //alert("Success!");
+			  $("#holder").html(data);
+			  reqmon = cal_month;
+			  reqyear = cal_year;
+			  //$("#top-date").text();
+			});
+			
+			$("#prev").click(function (){
+				if(reqmon == 1) {
+					reqmon = 12;
+					reqyear--; 
+				}
+				else{
+					reqmon--;
+				}
+			  $.post("index.php", { mon: reqmon, year: reqyear }).done(function(data) {
+				$("#holder").html(data);				
+			  });
+			});
+			
+			$("#next").click(function (){
+				if(reqmon == 12) {
+					reqmon = 1;
+					reqyear++; 
+				}
+				else{
+					reqmon++;
+				}
+			  $.post("index.php", { mon: reqmon, year: reqyear }).done(function(data) {
+				$("#holder").html(data);
+				
+			  });
+			});
+			
+			
+            //===========Theming and app bar============//
+			appBar = $(".appbar").applicationBar({ 
+                preloadAltBaseTheme: true, 
+                bindKeyboard: true,
+                metroLightUrl: 'images/metroIcons_light.jpg',
+                metroDarkUrl: 'images/metroIcons.jpg'
+            });
+			// append the theme options 
+            metroJs = jQuery.fn.metrojs;
+            metroJs.theme.appendAccentColors({
+                accentListContainer: ".theme-options"
+            });
+            metroJs.theme.appendBaseThemes({
+                baseThemeListContainer: ".base-theme-options"
+            });
+			
+			 $("body,.tiles").removeClass("dark blue");
+            metroJs = jQuery.fn.metrojs;
+            metroJs.theme.loadDefaultTheme();
+			//==========================================//
+        });
+    </script>
+</body>
+</html>
