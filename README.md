@@ -1,4 +1,4 @@
-Nss_Calendar_v0.1
+Nss_Calendar_v0.2
 =================
 
 Calendar module for integrating into the NSS website.
